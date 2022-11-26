@@ -559,3 +559,13 @@
             *         return Response({
             *             'result': 'Movie deleted successfully'
             *         })
+
+
+## Adding "STATUS_CODE" to the "watchlist_app/api/views.py" file:
+    -> "from rest_framework import status"
+    -> add "status=status.HTTP_200_OK/HTTP_404_NOT_FOUND/HTTP_400_BAD_REQUEST" at the last part of the Response() function
+        -FROM this:
+            * return Response({'result': 'Movie deleted successfully'})
+        -TO this:
+            * return Response({'result': 'Movie deleted successfully'}, status=status.HTTP_200_OK)
+            OR, return Response(serializer.data, status=status.HTTP_200_OK)
