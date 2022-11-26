@@ -8,12 +8,24 @@ def name_validator(value):
     return value
 
 class MovieSerializer(serializers.ModelSerializer):
+    #custom serializer methods (like @property of Model)
+    name_length = serializers.SerializerMethodField()
+    description_length = serializers.SerializerMethodField()
+    
     class Meta:
         model = Movie
-        fields = '__all__'
+        fields = '__all__' 
         #fields = ['name', 'description']
         #exclude = ['active']
-        
+    
+    #custom serializers getter method    
+    def get_name_length(self, object):
+        return len(object.name)
+    
+    #custom serializers getter method 
+    def get_description_length(self, object):
+        return len(object.description)
+    
     # field validation
     def validate_description(self, value):
         if len(value) < 5:

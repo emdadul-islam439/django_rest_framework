@@ -810,3 +810,49 @@
             *             raise serializers.ValidationError("Name and description should be different")
             *         return data
 
+
+## adding custom fields into the Serializer, which are not present into the Models-> 
+    -> add custom fields like this:
+        * name_length = serializers.SerializerMethodField()
+        * description_length = serializers.SerializerMethodField()
+    -> add getter functions like this:
+        * #custom serializers getter method    
+        * def get_name_length(self, object):
+        *     return len(object.name)
+        * 
+        * #custom serializers getter method 
+        * def get_description_length(self, object):
+        *     return len(object.description)
+    
+    -> the whole Serializer class will be like:
+        * class MovieSerializer(serializers.ModelSerializer):
+        *     #custom serializer methods (like @property of Model)
+        *     name_length = serializers.SerializerMethodField()
+        *     description_length = serializers.SerializerMethodField()
+        *     
+        *     class Meta:
+        *         model = Movie
+        *         fields = '__all__' 
+        *         #fields = ['name', 'description']
+        *         #exclude = ['active']
+        *     
+        *     #custom serializers getter method    
+        *     def get_name_length(self, object):
+        *         return len(object.name)
+        *     
+        *     #custom serializers getter method 
+        *     def get_description_length(self, object):
+        *         return len(object.description)
+        *     
+        *     # field validation
+        *     def validate_description(self, value):
+        *         if len(value) < 5:
+        *             raise serializers.ValidationError("Description is too short")
+        *         return value
+        *     
+        *     # object validation
+        *     def validate(self, data):
+        *         if data['name'] == data['description']:
+        *             raise serializers.ValidationError("Name and description should be different")
+        *         return data
+
