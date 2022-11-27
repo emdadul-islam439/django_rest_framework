@@ -1,42 +1,56 @@
 from rest_framework import serializers
-from ..models import Movie
 
-#validators
-def name_validator(value):
-    if len(value) < 4:
-        raise serializers.ValidationError("Name is too short")
-    return value
+from ..models import WatchList, StreamPlatform
 
-class MovieSerializer(serializers.ModelSerializer):
-    #custom serializer methods (like @property of Model)
-    name_length = serializers.SerializerMethodField()
-    description_length = serializers.SerializerMethodField()
-    
+
+class WatchSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Movie
+        model = WatchList
         fields = '__all__' 
-        #fields = ['name', 'description']
-        #exclude = ['active']
     
-    #custom serializers getter method    
-    def get_name_length(self, object):
-        return len(object.name)
+class StreamPlatformSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StreamPlatform
+        fields = '__all__'
+
+
+
+# #validators
+# def name_validator(value):
+#     if len(value) < 4:
+#         raise serializers.ValidationError("Title is too short")
+#     return value
+
+# class WatchSerializer(serializers.ModelSerializer):
+#     #custom serializer methods (like @property of Model)
+#     title_length = serializers.SerializerMethodField()
+#     storyline_length = serializers.SerializerMethodField()
     
-    #custom serializers getter method 
-    def get_description_length(self, object):
-        return len(object.description)
+#     class Meta:
+#         model = WatchList
+#         fields = '__all__' 
+#         #fields = ['title', 'storyline']
+#         #exclude = ['active']
     
-    # field validation
-    def validate_description(self, value):
-        if len(value) < 5:
-            raise serializers.ValidationError("Description is too short")
-        return value
+#     #custom serializers getter method    
+#     def get_title_length(self, object):
+#         return len(object.title)
     
-    # object validation
-    def validate(self, data):
-        if data['name'] == data['description']:
-            raise serializers.ValidationError("Name and description should be different")
-        return data
+#     #custom serializers getter method 
+#     def get_storyline_length(self, object):
+#         return len(object.storyline)
+    
+#     # field validation
+#     def validate_storyline(self, value):
+#         if len(value) < 5:
+#             raise serializers.ValidationError("storyline is too short")
+#         return value
+    
+#     # object validation
+#     def validate(self, data):
+#         if data['title'] == data['storyline']:
+#             raise serializers.ValidationError("Title and storyline should be different")
+#         return data
 
 
 
