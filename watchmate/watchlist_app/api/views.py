@@ -4,21 +4,21 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 from ..models import WatchList, StreamPlatform
-from .serializers import WatchSerializer, StreamPlatformSerializer
+from .serializers import WatchListSerializer, StreamPlatformSerializer
 
 
 class WatchListAV(APIView):
     def get(self, request):
         try:
             movies = WatchList.objects.all()
-            serializer = WatchSerializer(movies, many=True)
+            serializer = WatchListSerializer(movies, many=True)
             print(f"serializer.data = {serializer.data}")
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response({'Error': 'List not found'}, status.HTTP_404_NOT_FOUND)
         
     def post(self, request):
-        serializer = WatchSerializer(data=request.data)
+        serializer = WatchListSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -30,7 +30,7 @@ class WatchDetailsAV(APIView):
     def get(self, request, pk):
         try:
             movie = WatchList.objects.get(pk=pk)
-            serializer = WatchSerializer(movie)
+            serializer = WatchListSerializer(movie)
             print(f"serializer.data = {serializer.data}")
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
@@ -38,7 +38,7 @@ class WatchDetailsAV(APIView):
     
     def put(self, request, pk):
         watch_list = WatchList.objects.get(pk=pk)
-        serializer = WatchSerializer(watch_list, data=request.data)
+        serializer = WatchListSerializer(watch_list, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

@@ -856,3 +856,45 @@
         *             raise serializers.ValidationError("Name and description should be different")
         *         return data
 
+
+
+## using NESTED-SERIALIZER 
+    -> in the watchlist_app/models.py file add these models:
+        * from django.db import models
+        * 
+        * # Create your models here.
+        * class StreamPlatform(models.Model):
+        *     name = models.CharField(max_length=50)
+        *     about = models.CharField(max_length=150)
+        *     website = models.URLField(max_length=100)
+        *     
+        *     def __str__(self):
+        *         return self.name
+        * 
+        * class WatchList(models.Model):
+        *     title = models.CharField(max_length=50)
+        *     storyline = models.CharField(max_length=200)
+        *     platform = models.ForeignKey(StreamPlatform, on_delete=models.CASCADE, related_name='watchlist')
+        *     active = models.BooleanField(default=True)
+        *     created = models.DateTimeField(auto_now_add=True)
+        *     
+        *     def __str__(self):
+        *         return self.title 
+    
+
+    -> in the watchlist_app/api/serializers.py file add these lines:
+        * from rest_framework import serializers
+        * 
+        * from ..models import WatchList, StreamPlatform
+        * 
+        * 
+        * class WatchListSerializer(serializers.ModelSerializer):
+        *     class Meta:
+        *         model = WatchList
+        *         fields = '__all__' 
+        *     
+        * class StreamPlatformSerializer(serializers.ModelSerializer):
+        *     watchlist = WatchListSerializer(many=True, read_only=True) ---> this line is the nested-serializer, it will generate the list of related watchlist items
+        *     class Meta:
+        *         model = StreamPlatform
+        *         fields = '__all__'
