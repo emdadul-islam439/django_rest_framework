@@ -11,7 +11,7 @@ class WatchListAV(APIView):
     def get(self, request):
         try:
             movies = WatchList.objects.all()
-            serializer = WatchListSerializer(movies, many=True, context={'request': request})
+            serializer = WatchListSerializer(movies, many=True) # add "context={'request': request}" into the argument-list for HyperlinkedRelatedField
             print(f"serializer.data = {serializer.data}")
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
@@ -30,7 +30,7 @@ class WatchDetailsAV(APIView):
     def get(self, request, pk):
         try:
             movie = WatchList.objects.get(pk=pk)
-            serializer = WatchListSerializer(movie, context={'request': request})
+            serializer = WatchListSerializer(movie) # add "context={'request': request}" into the argument-list for HyperlinkedRelatedField
             print(f"serializer.data = {serializer.data}")
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
@@ -58,7 +58,7 @@ class StreamPlatformAV(APIView):
     def get(self, request):
         try:
             platforms = StreamPlatform.objects.all()
-            serializer = StreamPlatformSerializer(platforms, many=True, context={'request': request})
+            serializer = StreamPlatformSerializer(platforms, many=True) # add "context={'request': request}" into the argument-list for HyperlinkedRelatedField
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -76,7 +76,7 @@ class StreamPlatformDetailsAV(APIView):
     def get(self, request, pk):
         try:
             platform = StreamPlatform.objects.get(pk=pk)
-            serializer = StreamPlatformSerializer(platform, context={'request': request})
+            serializer = StreamPlatformSerializer(platform) # add "context={'request': request}" into the argument-list for HyperlinkedRelatedField
             print(f"serializer.data = {serializer.data}")
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:

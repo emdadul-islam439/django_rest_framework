@@ -9,16 +9,22 @@ class WatchListSerializer(serializers.ModelSerializer):
         fields = '__all__' 
     
 class StreamPlatformSerializer(serializers.ModelSerializer):
-    # watchlist = WatchListSerializer(many=True, read_only=True) # shwoing the whole model of the related_name="watchlist" attribute
-    # watchlist = serializers.StringRelatedField(many=True, read_only=True) # showing only the __str__ attribute of the related_name="watchlist" attribute
-    # watchlist = serializers.PrimaryKeyRelatedField(many=True, read_only=True) # showing only the 'pk' of the related_name="watchlist" attribute
-    watchlist = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name="movie-details")
-    
+    watchlist = WatchListSerializer(many=True, read_only=True)
     class Meta:
         model = StreamPlatform
         fields = '__all__'
+        
 
-
+# class StreamPlatformSerializer(serializers.ModelSerializer):
+#     # watchlist = WatchListSerializer(many=True, read_only=True) # shwoing the whole model of the related_name="watchlist" attribute
+#     # watchlist = serializers.StringRelatedField(many=True, read_only=True) # showing only the __str__ attribute of the related_name="watchlist" attribute
+#     # watchlist = serializers.PrimaryKeyRelatedField(many=True, read_only=True) # showing only the 'pk' of the related_name="watchlist" attribute
+#     watchlist = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name="movie-details")
+    
+#     class Meta:
+#         model = StreamPlatform
+#         fields = '__all__'
+        
 
 # #validators
 # def name_validator(value):
