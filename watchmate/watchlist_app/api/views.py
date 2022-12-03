@@ -11,11 +11,11 @@ class WatchListAV(APIView):
     def get(self, request):
         try:
             movies = WatchList.objects.all()
-            serializer = WatchListSerializer(movies, many=True)
+            serializer = WatchListSerializer(movies, many=True, context={'request': request})
             print(f"serializer.data = {serializer.data}")
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
-            return Response({'Error': 'List not found'}, status.HTTP_404_NOT_FOUND)
+            return Response(status.HTTP_400_BAD_REQUEST)
         
     def post(self, request):
         serializer = WatchListSerializer(data=request.data)
@@ -30,11 +30,11 @@ class WatchDetailsAV(APIView):
     def get(self, request, pk):
         try:
             movie = WatchList.objects.get(pk=pk)
-            serializer = WatchListSerializer(movie)
+            serializer = WatchListSerializer(movie, context={'request': request})
             print(f"serializer.data = {serializer.data}")
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
-            return Response({'Error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     
     def put(self, request, pk):
         watch_list = WatchList.objects.get(pk=pk)
@@ -58,10 +58,10 @@ class StreamPlatformAV(APIView):
     def get(self, request):
         try:
             platforms = StreamPlatform.objects.all()
-            serializer = StreamPlatformSerializer(platforms, many=True)
+            serializer = StreamPlatformSerializer(platforms, many=True, context={'request': request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         
     def post(self, request):
         serializer = StreamPlatformSerializer(data=request.data)
@@ -76,11 +76,11 @@ class StreamPlatformDetailsAV(APIView):
     def get(self, request, pk):
         try:
             platform = StreamPlatform.objects.get(pk=pk)
-            serializer = StreamPlatformSerializer(platform)
+            serializer = StreamPlatformSerializer(platform, context={'request': request})
             print(f"serializer.data = {serializer.data}")
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
-            return Response({'Error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     
     def put(self, request, pk):
         stream_platform = StreamPlatform.objects.get(pk=pk)
