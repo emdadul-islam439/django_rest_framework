@@ -11,6 +11,11 @@ from .serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSe
 
 class ReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer
+    
+    def perform_create(self, serializer):
+        pk = self.kwargs.get('pk')
+        watchlist = WatchList.objects.get(pk=pk)
+        serializer.save(watchlist=watchlist)
 
 
 class ReviewList(generics.ListAPIView):
