@@ -41,7 +41,7 @@ class ReviewCreate(generics.CreateAPIView):
 
 
 class ReviewList(generics.ListAPIView):
-    permission_classes = [AdminOrReadOnly]
+    permission_classes = [IsAuthenticated]
     
     serializer_class = ReviewSerializer
     
