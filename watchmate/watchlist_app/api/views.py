@@ -24,11 +24,20 @@ class ReviewCreate(generics.CreateAPIView):
         pk = self.kwargs.get('pk')
         watchlist = WatchList.objects.get(pk=pk)
         
-        review_queryset = Review.objects.filter(watchlist=watchlist, review_user=self.request.user)
+        review_user = self.request.user
+        review_queryset = Review.objects.filter(watchlist=watchlist, review_user=review_user)
         if len(review_queryset) > 0:
             raise ValidationError('Already a review exists!')
         
-        serializer.save(watchlist=watchlist, review_user=review_queryset)
+        if watchlist.number_rating == 0:
+            watchlist.avg_rating = serializer.validated_data['rating']
+        else:
+            watchlist.avg_rating = (serializer.validated_data['rating'] + watchlist.avg_rating) / 2
+        
+        watchlist.number_rating = watchlist.number_rating + 1
+        watchlist.save(update_fields=['avg_rating', 'number_rating'])
+        
+        serializer.save(watchlist=watchlist, review_user=review_user)
 
 
 class ReviewList(generics.ListAPIView):
@@ -41,7 +50,6 @@ class ReviewList(generics.ListAPIView):
         return Review.objects.filter(watchlist=pk)
     
     
-
 class ReviewDetails(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     
