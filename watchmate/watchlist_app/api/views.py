@@ -51,6 +51,14 @@ class ReviewList(generics.ListAPIView):
         return Review.objects.filter(watchlist=pk)
     
     
+class UserReviewList(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+    
+    def get_queryset(self):
+        username = self.kwargs['username']
+        return Review.objects.filter(review_user__username=username)
+    
+    
 class ReviewDetails(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsReviewUserOrReadOnly]
     

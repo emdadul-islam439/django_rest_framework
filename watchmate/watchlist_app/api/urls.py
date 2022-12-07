@@ -11,4 +11,6 @@ urlpatterns = [
     path('stream/<int:pk>/review-create/', views.ReviewCreate.as_view(), name='review-create'),
     path('stream/<int:pk>/reviews/', views.ReviewList.as_view(), name='review-list'),
     path('stream/review/<int:pk>/', views.ReviewDetails.as_view(), name='review-details'), 
+    
+    path('reviews/<str:username>', views.UserReviewList.as_view(), name='user-review-list'),
 ]
