@@ -1,3 +1,4 @@
+from errno import ECANCELED
 from rest_framework.response import Response
 # from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -97,7 +98,7 @@ class WatchListAV(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class WatchDetailsAV(APIView):
@@ -125,7 +126,7 @@ class WatchDetailsAV(APIView):
         try:
             movie = WatchList.objects.get(pk=pk)
             movie.delete()
-            return Response({'result': 'Item deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+            return Response({'result': 'Item deleted successfully'}, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)    
         
@@ -147,7 +148,7 @@ class StreamPlatformAV(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response({'Error': 'Not found'}, status.HTTP_404_NOT_FOUND)
+            return Response({'Error': serializer.errors}, status.HTTP_400_BAD_REQUEST)
         
         
 class StreamPlatformDetailsAV(APIView):
