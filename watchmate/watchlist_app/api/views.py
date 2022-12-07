@@ -9,11 +9,11 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 
 from ..models import WatchList, StreamPlatform, Review
 from .serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
-from .permissions import AdminOrReadOnly, IsReviewUserOrReadOnly
+from .permissions import IsAdminOrReadOnly, IsReviewUserOrReadOnly
 
 
 class ReviewCreate(generics.CreateAPIView):
-    permission_classes = [IsReviewUserOrReadOnly]
+    permission_classes = [IsAuthenticated]
     
     serializer_class = ReviewSerializer
     
@@ -41,7 +41,7 @@ class ReviewCreate(generics.CreateAPIView):
 
 
 class ReviewList(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     
     serializer_class = ReviewSerializer
     
@@ -80,6 +80,8 @@ class ReviewDetails(generics.RetrieveUpdateDestroyAPIView):
     
 
 class WatchListAV(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+    
     def get(self, request):
         try:
             movies = WatchList.objects.all()
@@ -99,6 +101,8 @@ class WatchListAV(APIView):
 
 
 class WatchDetailsAV(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+    
     def get(self, request, pk):
         try:
             movie = WatchList.objects.get(pk=pk)
@@ -127,6 +131,8 @@ class WatchDetailsAV(APIView):
         
 
 class StreamPlatformAV(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+    
     def get(self, request):
         try:
             platforms = StreamPlatform.objects.all()
@@ -145,6 +151,8 @@ class StreamPlatformAV(APIView):
         
         
 class StreamPlatformDetailsAV(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+    
     def get(self, request, pk):
         try:
             platform = StreamPlatform.objects.get(pk=pk)
