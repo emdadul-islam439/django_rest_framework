@@ -15,6 +15,7 @@ def registration_view(request):
         if serializer.is_valid():
             account = serializer.save()
             token = Token.objects.get(user=account).key
+            status_code = status.HTTP_201_CREATED
             
             data['Response'] = "User created successfully!"
             data['username'] = account.username
@@ -22,8 +23,9 @@ def registration_view(request):
             data['token'] = token
         else:
             data = serializer.errors
+            status_code = status.HTTP_400_BAD_REQUEST
         
-        return Response(data)
+        return Response(data, status=status_code)
     
 
 @api_view(['POST'])
