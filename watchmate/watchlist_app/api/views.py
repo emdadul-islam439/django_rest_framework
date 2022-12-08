@@ -1,4 +1,5 @@
 from errno import ECANCELED
+
 from rest_framework.response import Response
 # from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -11,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from ..models import WatchList, StreamPlatform, Review
 from .serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 from .permissions import IsAdminOrReadOnly, IsReviewUserOrReadOnly
+from .pagination import WatchListPagination, UserReviewListPagination
 
 
 class ReviewCreate(generics.CreateAPIView):
@@ -53,6 +55,7 @@ class ReviewList(generics.ListAPIView):
     
 class UserReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
+    pagination_class = UserReviewListPagination
     
     def get_queryset(self):
         # username = self.kwargs['username']
@@ -91,6 +94,7 @@ class ReviewDetails(generics.RetrieveUpdateDestroyAPIView):
 
 class WatchListAV(APIView):
     permission_classes = [IsAdminOrReadOnly]
+    pagination_class = WatchListPagination
     
     def get(self, request):
         try:
