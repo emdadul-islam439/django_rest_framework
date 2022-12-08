@@ -1,4 +1,4 @@
-from rest_framework.pagination import PageNumberPagination
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 
 class WatchListPagination(PageNumberPagination):
     # number of items per page 
@@ -36,3 +36,10 @@ class UserReviewListPagination(PageNumberPagination):
     #www.example.com/?page=last -> by default 'page=last' will load the 'LAST' page, but now it won't work 
     #'page=end' will load the 'LAST' page now.
     last_page_string = 'end'
+    
+    
+class UserReviewListLOPagination(LimitOffsetPagination):
+    default_limit = 4
+    limit_query_param = 'lmt' #by deafult it's 'limit'  
+    offset_query_param = 'offst' #by default it's 'offset'
+    max_limit = 10 # by default nothing is set, any number will be taken
