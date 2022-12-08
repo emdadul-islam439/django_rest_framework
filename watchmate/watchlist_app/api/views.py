@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from ..models import WatchList, StreamPlatform, Review
 from .serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 from .permissions import IsAdminOrReadOnly, IsReviewUserOrReadOnly
-from .pagination import WatchListPagination, UserReviewListPagination, UserReviewListLOPagination
+from .pagination import WatchListPagination, UserReviewListPagination, UserReviewListLOPagination, UserReviewListCPagination
 
 
 class ReviewCreate(generics.CreateAPIView):
@@ -55,7 +55,7 @@ class ReviewList(generics.ListAPIView):
     
 class UserReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
-    pagination_class = UserReviewListLOPagination
+    pagination_class = UserReviewListCPagination
     
     def get_queryset(self):
         # username = self.kwargs['username']

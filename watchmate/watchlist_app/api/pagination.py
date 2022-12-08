@@ -1,4 +1,4 @@
-from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination, CursorPagination
 
 class WatchListPagination(PageNumberPagination):
     # number of items per page 
@@ -43,3 +43,9 @@ class UserReviewListLOPagination(LimitOffsetPagination):
     limit_query_param = 'lmt' #by deafult it's 'limit'  
     offset_query_param = 'offst' #by default it's 'offset'
     max_limit = 10 # by default nothing is set, any number will be taken
+    
+
+class UserReviewListCPagination(CursorPagination):
+    page_size = 3 #no of item per page
+    cursor_query_param = 'crsr' # by default it's 'cursor'
+    ordering = 'created' # by default it's '-created' 
